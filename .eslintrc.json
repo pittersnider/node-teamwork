@@ -1,0 +1,63 @@
+{
+    "parser": "babel-eslint",
+    "env": {
+        "node": true,
+        "es6": true
+    },
+    "parserOptions": {
+        "ecmaVersion": 6,
+        "sourceType": "script",
+        "ecmaFeatures": {
+            "arrowFunctions": true,
+            "binaryLiterals": true,
+            "classes": true,
+            "defaultParams": true,
+            "destructuring": true,
+            "forOf": true,
+            "generators": true,
+            "modules": true,
+            "objectLiteralComputedProperties": true,
+            "objectLiteralDuplicateProperties": true,
+            "objectLiteralShorthandMethods": true,
+            "objectLiteralShorthandProperties": true,
+            "octalLiterals": true,
+            "regexUFlag": true,
+            "regexYFlag": true,
+            "spread": true,
+            "superInFunctions": true,
+            "templateStrings": true,
+            "unicodeCodePointEscapes": true,
+            "globalReturn": true,
+            "experimentalObjectRestSpread": true,
+            "impliedStrict": false,
+            "blockBindings": true,
+            "jsx": true
+        }
+    },
+    "extends": "eslint:recommended",
+    "rules": {
+        "curly": ["error"],
+        "strict": ["error", "global"],
+        "indent": ["error"],
+        "arrow-parens": ["warn"],
+        "brace-style": ["error", "1tbs"],
+        "linebreak-style": ["error", "unix"],
+        "quotes": ["error", "single"],
+        "semi": ["error", "always"],
+        "no-var": ["error"],
+        "no-this-before-super": ["error"],
+        "max-depth": ["warn"],
+        "no-console": ["warn"],
+        "constructor-super": ["error"],
+        "consistent-return": ["error"],
+        "object-curly-spacing": ["error", "always"],
+        "spaced-comment": ["warn"],
+        "require-await": ["warn"],
+        "no-nested-ternary": ["error"],
+        "no-unneeded-ternary": ["warn"],
+        "no-use-before-define": ["warn"]
+    },
+    "globals": {
+        "app": true
+    }
+}

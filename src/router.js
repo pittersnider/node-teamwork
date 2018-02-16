@@ -28,7 +28,10 @@ const initRouter = function (url, headers) {
         user: {
             list: format(url, 'GET', 'people.json')
         },
-        task: {},
+        task: {
+            done: format(url, 'PUT', 'tasks/%s/complete.json'),
+            undone: format(url, 'PUT', 'tasks/%s/uncomplete.json')
+        },
         tasklist: {}
 
     };

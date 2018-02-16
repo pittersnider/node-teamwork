@@ -75,6 +75,26 @@ class TeamWork {
 
     }
 
+    /**
+     * Mark ONE task as completed.
+     */
+    async completeTask({ taskId }) {
+
+        const args = [taskId];
+        return await this.request({ name: 'task.done', args });
+
+    }
+
+    /**
+     * Mark ONE task as uncompleted and reopen it.
+     */
+    async reopenTask({ taskId }) {
+
+        const args = [taskId];
+        return await this.request({ name: 'task.undone', args });
+
+    }
+
 }
 
 module.exports = TeamWork;

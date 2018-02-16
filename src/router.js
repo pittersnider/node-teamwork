@@ -11,8 +11,8 @@ const format = function(url, type = 'GET', name) {
 
 };
 
-const initRouter = function (url, headers) {
-    
+const initRouter = function(url, headers) {
+
     Object.freeze(headers);
 
     const routes = {
@@ -30,9 +30,12 @@ const initRouter = function (url, headers) {
         },
         task: {
             done: format(url, 'PUT', 'tasks/%s/complete.json'),
-            undone: format(url, 'PUT', 'tasks/%s/uncomplete.json')
+            undone: format(url, 'PUT', 'tasks/%s/uncomplete.json'),
+            add: format(url, 'POST', 'tasklists/%s/tasks.json')
         },
-        tasklist: {}
+        tasklist: {
+            add: format(url, 'POST', 'projects/%s/tasklists.json')
+        }
 
     };
 

@@ -8,6 +8,7 @@ class TeamWork {
     constructor({ token, url }) {
 
         const Authorization = 'BASIC ' + new Buffer(token).toString('base64');
+
         this.url = url;
         this.headers = { Authorization, 'Content-Type': 'application/json' };
         this.router = new Router(url, this.headers);
@@ -38,7 +39,7 @@ class TeamWork {
                 success: true,
                 payload: response.data,
                 url: route.url
-                
+
             };
 
         } catch (error) {
@@ -92,6 +93,62 @@ class TeamWork {
 
         const args = [taskId];
         return await this.request({ name: 'task.undone', args });
+
+    }
+
+    /**
+     * Create a task inside of a specific tasklist.
+     */
+    async addTask({
+        parentTaskId = '0',
+        tasklistId,
+        content,
+        progress = '0',
+        startDate = '',
+        endDate = ''
+    }) {
+
+        const args = [tasklistId];
+        const params = {
+            'todo-item': {
+                'content': content,
+                'progress': progress,
+                'parentTaskId': parentTaskId,
+                'start-date': startDate,
+                'end-date': endDate
+            }
+        };
+
+        return await this.request({ name: 'task.add', args, params });
+
+    }
+
+    /**
+     * Create a tasklist inside of a specific project.
+     */
+    async addTasklist({
+        projectId,
+        name,
+        description,
+        hidden = false,
+        pinned = false,
+        milestoneId = '',
+        todoListTemplateId = ''
+    }) {
+
+        const args = [projectId];
+        const params = {
+            'todo-list': {
+                'name': name,
+                'pinned': pinned,
+                'description': description,
+                'todo-list-template-id': todoListTemplateId,
+                'milestone-id': milestoneId,
+                'private': hidden
+            }
+        };
+
+        return await this.request({ name: 'tasklist.add', args, params });
 
     }
 

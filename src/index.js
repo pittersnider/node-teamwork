@@ -1,6 +1,7 @@
 'use strict';
 
 const Router = require('./router');
+const Helper = require('./helper');
 const Page = require('./page');
 const axios = require('axios');
 
@@ -28,6 +29,10 @@ class TeamWork {
 
     }
 
+    /**
+     * Retrieves the route and performs the request
+     *  using the Authentication and Content-Type headers.
+     */
     async request({ name, args, params, page }) {
 
         const route = this.router.get({ name, args, params, page });
@@ -72,6 +77,50 @@ class TeamWork {
 
         const page = Page.builder().fromUser(userIds);
         return await this.request({ name: 'user.tasks', page });
+
+    }
+
+    /**
+     * Retrieve pending tasks assigned to ONE or MANY user(s).
+     */
+    async getProjectTasks({ projectId, userIds = [] }) {
+
+        const args = [projectId];
+        const page = Page.builder().fromUser(userIds);
+        return await this.request({ name: 'project.tasks', args, page });
+
+    }
+
+    /**
+     * Add time entry to a specific user inside a specific project.
+     */
+    async addProjectTimeEntry({
+        projectId,
+        userId,
+        hours,
+        minutes,
+        description,
+        date = Helper.date(),
+        time = Helper.time(),
+        isbillable = '1',
+        tags = ''
+    }) {
+
+        const args = [projectId];
+        const params = {
+            'time-entry': {
+                'hours': hours,
+                'minutes': minutes,
+                'isbillable': isbillable,
+                'tags': tags,
+                'time': time,
+                'date': date,
+                'description': description,
+                'person-id': userId
+            }
+        };
+
+        return await this.request({ name: 'project.time.add', args, params });
 
     }
 

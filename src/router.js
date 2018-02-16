@@ -21,9 +21,13 @@ const initRouter = function(url, headers) {
         project: {
             list: format(url, 'GET', 'projects.json'),
             get: format(url, 'GET', 'projects/%s.json'),
+            tasks: format(url, 'GET', 'projects/%s/tasks.json'),
             people: {
                 add: format(url, 'PUT', 'projects/%s/people.json'),
                 remove: format(url, 'PUT', 'projects/%s/people.json')
+            },
+            time: {
+                add: format(url, 'POST', 'projects/%s/time_entries.json')
             }
         },
         user: {

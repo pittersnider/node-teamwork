@@ -1,6 +1,7 @@
 'use strict';
 
 const Router = require('./router');
+const Page = require('./page');
 const axios = require('axios');
 
 class TeamWork {
@@ -27,9 +28,9 @@ class TeamWork {
 
     }
 
-    async request(routeName, args, params) {
+    async request({ name, args, params, page }) {
 
-        const route = this.router.get(routeName, args, params);
+        const route = this.router.get({ name, args, params, page });
         let response;
 
         try {
@@ -51,6 +52,26 @@ class TeamWork {
             };
 
         }
+
+    }
+
+    /**
+     * Get details about a specific project.
+     */
+    async getProject({ projectId }) {
+
+        const args = [projectId];
+        return await this.request({ name: 'project.get', args });
+
+    }
+
+    /**
+     * Retrieve pending tasks assigned to ONE or MANY user(s).
+     */
+    async getUserTasks({ userIds }) {
+
+        const page = Page.builder().fromUser(userIds);
+        return await this.request({ name: 'user.tasks', page });
 
     }
 

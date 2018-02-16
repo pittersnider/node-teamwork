@@ -1,6 +1,7 @@
 'use strict';
 
 const _ = require('lodash');
+const Page = require('./page');
 
 const format = function(url, type = 'GET', name) {
 
@@ -26,7 +27,8 @@ const initRouter = function(url, headers) {
             }
         },
         user: {
-            list: format(url, 'GET', 'people.json')
+            list: format(url, 'GET', 'people.json'),
+            tasks: format(url, 'GET', 'tasks.json')
         },
         task: {
             done: format(url, 'PUT', 'tasks/%s/complete.json'),
@@ -39,12 +41,12 @@ const initRouter = function(url, headers) {
 
     };
 
-    routes.get = function({ name, args = [], params = {} }) {
+    routes.get = function({ name, args = [], params = {}, page = Page.builder() }) {
 
         const route = _.get(routes, name);
         const cloneArgs = _.clone(args);
 
-        route.url = route.url.replace('%s', () => cloneArgs.shift());
+        route.url = route.url.replace('%s', () => cloneArgs.shift()) + page.querystring();
         route.data = params;
         route.headers = headers;
 

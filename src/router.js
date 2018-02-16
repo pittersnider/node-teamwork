@@ -37,10 +37,16 @@ const initRouter = function(url, headers) {
         task: {
             done: format(url, 'PUT', 'tasks/%s/complete.json'),
             undone: format(url, 'PUT', 'tasks/%s/uncomplete.json'),
-            add: format(url, 'POST', 'tasklists/%s/tasks.json')
+            add: format(url, 'POST', 'tasklists/%s/tasks.json'),
+            time: {
+                add: format(url, 'POST', 'tasks/%s/time_entries.json')
+            }
         },
         tasklist: {
             add: format(url, 'POST', 'projects/%s/tasklists.json')
+        },
+        time: {
+            remove: format(url, 'DELETE', 'time_entries/%s.json')
         }
 
     };

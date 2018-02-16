@@ -91,6 +91,40 @@ class TeamWork {
 
     }
 
+
+    /**
+     * Add time entry to a specific user inside a specific task.
+     */
+    async addTaskTimeEntry({
+        taskId,
+        userId,
+        hours,
+        minutes,
+        description,
+        date = Helper.date(),
+        time = Helper.time(),
+        isbillable = '1',
+        tags = ''
+    }) {
+
+        const args = [taskId];
+        const params = {
+            'time-entry': {
+                'hours': hours,
+                'minutes': minutes,
+                'isbillable': isbillable,
+                'tags': tags,
+                'time': time,
+                'date': date,
+                'description': description,
+                'person-id': userId
+            }
+        };
+
+        return await this.request({ name: 'task.time.add', args, params });
+
+    }
+
     /**
      * Add time entry to a specific user inside a specific project.
      */
@@ -132,6 +166,16 @@ class TeamWork {
         const args = [projectId];
         const params = { add: { userIdList: this.formatList(userIds) } };
         return await this.request({ name: 'project.people.add', args, params });
+
+    }
+
+    /**
+     * Add ONE or MANY user(s) to the project.
+     */
+    async removeTimeEntry({ timeId }) {
+
+        const args = [timeId];
+        return await this.request({ name: 'time.remove', args });
 
     }
 

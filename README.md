@@ -209,4 +209,4 @@ This software depends on TeamWork's uptime and their API consistence.
 ## License
 
 **Author:** João Pedro Viana (wernovox, snider@degiant.com.br)  
-**License:** GPL-3.0
+**License:** MIT License

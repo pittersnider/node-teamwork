@@ -12,7 +12,7 @@ By **João Pedro Viana**, February 22th, 2018.
 Common (NPM): `npm install node-teamwork --save`  
 Custom (Yarn): `yarn add node-teamwork --save`
   
-Generare your TeamWork's token and read their FAQ: https://developer.teamwork.com
+Generate your TeamWork's token and read their FAQ: https://developer.teamwork.com
 
 ## Currently Available APIs
 

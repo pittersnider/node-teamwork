@@ -17,7 +17,7 @@
     "developer-friendly"
   ],
   "author": "João Pedro Viana <snider@degiant.com.br>",
-  "license": "GPL-3.0",
+  "license": "MIT",
   "bugs": {
     "url": "https://github.com/wernovox/node-teamwork/issues"
   },

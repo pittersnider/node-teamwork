@@ -4,7 +4,7 @@ The purpose of this software is to turn the TeamWork Restful APIs more acessible
   
 This software is still under development and many of the desired APIs are currently being implemented. Please, consider being patient, or submiting your pull request with new features and/or improvements.  
   
-Please, considerar that if TeamWork change their Restful API, this software can break.  
+Please, considerar that if TeamWork change their Restful API, this software may break.  
 By **João Pedro Viana**, February 22th, 2018.
 
 ## Install
@@ -202,7 +202,7 @@ I'll attend your issue as soon as possible.
 
 ## Disclaimer
 
-I'm not member of TeamWork's STAFF. I jsut made this software with the purpose to make more easy and developer-friendly to handle TeamWork RESTFUL APIs.  
+I'm not member of TeamWork's STAFF. I've just made this software with the purpose to turn more easy and developer-friendly to handle TeamWork RESTFUL APIs.  
   
 This software depends on TeamWork's uptime and their API consistence.
 

@@ -16,7 +16,8 @@ Generate your TeamWork's token and read their FAQ: https://developer.teamwork.co
 
 ## Last changes
 ```
-- Added new APIs: getProjectPeople()
+- Now all applicable API methods can receive 'pagination' as argument. See API for details.
+- Added new APIs: getProjectPeople(), getActiveProjects()
 - getProject: Added 'includePeople' (defaults true) to the argument's object
 ```
 
@@ -56,18 +57,30 @@ Our API response is always offered as:
 }
 ```
 
+You may use pagination (optionally):
+```javascript
+
+// ...
+// most simple example of pagination
+// in an example, request only 1 item from API
+
+const pagination = TeamWork.page().max(1) /*.status('ACTIVE').index(2)...(...)*/ ;
+TeamWork.getUserTasks({ userIds: 202478, pagination });
+
+```
+
 And our current APIs are:
 
 #### Get Project by ID
 ```javascript
-// asynchronous (promise)
+// asynchronous (promise), accepts pagination
 // Retrieves information about a specific project
 TeamWork.getProject({ projectId: '1' }).then((response) => { ... }).catch((error) => { ... });
 ```
 
 #### Get Tasks assigned to User(s) ID(s)
 ```javascript
-// asynchronous (promise)
+// asynchronous (promise), accepts pagination
 // Retrieves a list of tasks from a single specific user
 TeamWork.getUserTasks({ userIds: '2' }).then(...).catch(...);
 
@@ -78,7 +91,7 @@ TeamWork.getUserTasks({ userIds: ['1', '2', ...] }).then(...).catch(...);
 
 #### Get Tasks from Project ID
 ```javascript
-// asynchronous (promise)
+// asynchronous (promise), accepts pagination
 // Retrieves a list of tasks from a SINGLE specific project
 TeamWork.getProjectTasks({ projectId: '2' }).then(...).catch(...);
 
@@ -89,7 +102,7 @@ TeamWork.getUserTasks({ projectId: '2', userIds: ['1', ...] }).then(...).catch(.
 
 #### Get Project People
 ```javascript
-// asynchronous (promise)
+// asynchronous (promise), accepts pagination
 // Get complete and detailed people list from a specific project
 TeamWork.getProjectPeople({ projectId: '2' }).then(...).catch(...);
 

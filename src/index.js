@@ -72,6 +72,16 @@ class TeamWork {
     }
 
     /**
+     * Get complete and detailed people list from a specific project.
+     */
+    async getProjectPeople({ projectId }) {
+
+        const args = [projectId];
+        return await this.request({ name: 'project.people.list', args });
+
+    }
+
+    /**
      * Retrieve pending tasks assigned to ONE or MANY user(s).
      */
     async getUserTasks({ userIds }) {

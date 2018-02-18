@@ -23,6 +23,7 @@ const initRouter = function(url, headers) {
             get: format(url, 'GET', 'projects/%s.json'),
             tasks: format(url, 'GET', 'projects/%s/tasks.json'),
             people: {
+                list: format(url, 'GET', 'projects/%s/people.json'),
                 add: format(url, 'PUT', 'projects/%s/people.json'),
                 remove: format(url, 'PUT', 'projects/%s/people.json')
             },

@@ -14,6 +14,12 @@ Custom (Yarn): `yarn add node-teamwork --save`
   
 Generate your TeamWork's token and read their FAQ: https://developer.teamwork.com
 
+## Last changes
+```
+- Added new APIs: getProjectPeople()
+- getProject: Added 'includePeople' (defaults true) to the argument's object
+```
+
 ## Currently Available APIs
 
 ```javascript
@@ -81,6 +87,14 @@ TeamWork.getUserTasks({ projectId: '2', userIds: ['1', ...] }).then(...).catch(.
 
 ```
 
+#### Get Project People
+```javascript
+// asynchronous (promise)
+// Get complete and detailed people list from a specific project
+TeamWork.getProjectPeople({ projectId: '2' }).then(...).catch(...);
+
+```
+
 #### Add User(s) to Project
 ```javascript
 // asynchronous (promise)
@@ -92,7 +106,7 @@ TeamWork.addProjectUser({ projectId: '2', userIds: ['1', '2', ...] }).then(...).
 
 ```
 
-#### Add User(s) to Project
+#### Remove User(s) from Project
 ```javascript
 // asynchronous (promise)
 // REMOVE a SINGLE user from the project

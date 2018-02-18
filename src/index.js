@@ -63,10 +63,10 @@ class TeamWork {
     /**
      * Get details about a specific project.
      */
-    async getProject({ projectId, includePeople = true }) {
+    async getProject({ projectId, includePeople = true, pagination }) {
 
         const args = [projectId];
-        const page = Page.builder().includePeople(includePeople);
+        const page = Page.builder(pagination).includePeople(includePeople);
         return await this.request({ name: 'project.get', page, args });
 
     }
@@ -74,30 +74,40 @@ class TeamWork {
     /**
      * Get complete and detailed people list from a specific project.
      */
-    async getProjectPeople({ projectId }) {
+    async getProjectPeople({ projectId, pagination }) {
 
         const args = [projectId];
-        return await this.request({ name: 'project.people.list', args });
+        return await this.request({ name: 'project.people.list', args, page: pagination });
 
     }
 
     /**
      * Retrieve pending tasks assigned to ONE or MANY user(s).
      */
-    async getUserTasks({ userIds }) {
+    async getUserTasks({ userIds, pagination }) {
 
-        const page = Page.builder().fromUser(userIds);
+        const page = Page.builder(pagination).fromUser(userIds);
         return await this.request({ name: 'user.tasks', page });
 
     }
 
     /**
+     * Retrieve a list of active projects.
+     */
+    async getActiveProjects() {
+
+        const page = Page.builder().status('ACTIVE').all();
+        return await this.request({ name: 'project.list', page });
+
+    }
+
+    /**
      * Retrieve pending tasks assigned to ONE or MANY user(s).
      */
-    async getProjectTasks({ projectId, userIds = [] }) {
+    async getProjectTasks({ projectId, userIds = [], pagination }) {
 
         const args = [projectId];
-        const page = Page.builder().fromUser(userIds);
+        const page = Page.builder(pagination).fromUser(userIds);
         return await this.request({ name: 'project.tasks', args, page });
 
     }

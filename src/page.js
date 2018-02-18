@@ -1,8 +1,10 @@
 'use strict';
 
+const _ = require('lodash');
+
 class Page {
 
-    constructor(basics = { limit: 15, offset: 0 }) {
+    constructor(basics = { limit: 250, offset: 0 }) {
         this.queries = {
             pageSize: [basics.limit],
             page: [Math.round(basics.offset / basics.limit) + 1]
@@ -16,11 +18,19 @@ class Page {
 
     }
 
+    max(number) {
+        return this.size(number);
+    }
+
     size(number) {
 
         this.queries.pageSize = [number];
         return this;
 
+    }
+
+    status() {
+        return this.defineTerm('status', Object.values(arguments));
     }
 
     defineTerm(name, values) {
@@ -41,6 +51,11 @@ class Page {
 
     }
 
+    all() {
+        delete this.queries.pageSize;
+        return this;
+    }
+
     fromUser() {
         return this.defineTerm('responsible-party-ids', Object.values(arguments));
     }
@@ -56,8 +71,14 @@ class Page {
         return '?' + Object.keys(this.queries).map((key) => key + '=' + this.queries[key].join(',')).join('&');
     }
 
-    static builder() {
+    static builder(defaultPage) {
+
+        if (defaultPage && (defaultPage instanceof Page)) {
+            return _.cloneDeep(defaultPage);
+        }
+
         return new Page();
+
     }
 
 }

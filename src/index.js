@@ -63,10 +63,11 @@ class TeamWork {
     /**
      * Get details about a specific project.
      */
-    async getProject({ projectId }) {
+    async getProject({ projectId, includePeople = true }) {
 
         const args = [projectId];
-        return await this.request({ name: 'project.get', args });
+        const page = Page.builder().includePeople(includePeople);
+        return await this.request({ name: 'project.get', page, args });
 
     }
 
@@ -90,7 +91,6 @@ class TeamWork {
         return await this.request({ name: 'project.tasks', args, page });
 
     }
-
 
     /**
      * Add time entry to a specific user inside a specific task.

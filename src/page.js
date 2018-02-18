@@ -45,6 +45,10 @@ class Page {
         return this.defineTerm('responsible-party-ids', Object.values(arguments));
     }
 
+    includePeople() {
+        return this.defineTerm('includePeople', Object.values(arguments));
+    }
+
     /**
      * Compile queries and turns into a url querystring.
      */

@@ -1,19 +1,18 @@
 'use strict';
 
 const Router = require('./router');
-const Helper = require('./helper');
 const Page = require('./page');
 const axios = require('axios');
 
 class TeamWork {
 
-    constructor({ token, url }) {
+    constructor(options = { token: null, url: null }) {
 
-        const Authorization = 'BASIC ' + new Buffer(token).toString('base64');
+        const Authorization = 'BASIC ' + new Buffer(options.token).toString('base64');
 
-        this.url = url;
+        this.url = options.url;
         this.headers = { Authorization, 'Content-Type': 'application/json' };
-        this.router = new Router(url, this.headers);
+        this.router = new Router(options.url, this.headers);
 
     }
 
@@ -33,9 +32,15 @@ class TeamWork {
      * Retrieves the route and performs the request
      *  using the Authentication and Content-Type headers.
      */
-    async request({ name, args, params, page }) {
+    async request(options = { name: null, args: [], params: {}, page: null }) {
 
-        const route = this.router.get({ name, args, params, page });
+        const route = this.router.get({
+            name: options.name,
+            args: options.args,
+            params: options.params,
+            page: options.page
+        });
+
         let response;
 
         try {
@@ -63,31 +68,38 @@ class TeamWork {
     /**
      * Get details about a specific project.
      */
-    async getProject({ projectId, includePeople = true, pagination }) {
+    async getProject(input = { projectId: '0' }) {
 
-        const args = [projectId];
-        const page = Page.builder(pagination).includePeople(includePeople);
-        return await this.request({ name: 'project.get', page, args });
+        return await this.request({
+            name: 'project.get',
+            args: [input.projectId],
+            page: Page.builder(input.pagination)
+        });
 
     }
 
     /**
      * Get complete and detailed people list from a specific project.
      */
-    async getProjectPeople({ projectId, pagination }) {
+    async getProjectPeople(input = { projectId: '0' }) {
 
-        const args = [projectId];
-        return await this.request({ name: 'project.people.list', args, page: pagination });
+        return await this.request({
+            name: 'project.people.list',
+            args: [input.projectId],
+            page: input.pagination
+        });
 
     }
 
     /**
-     * Retrieve pending tasks assigned to ONE or MANY user(s).
+     * Retrieve active users.
      */
-    async getUserTasks({ userIds, pagination }) {
+    async getUsers(input = {}) {
 
-        const page = Page.builder(pagination).fromUser(userIds);
-        return await this.request({ name: 'user.tasks', page });
+        return await this.request({
+            name: 'user.tasks',
+            page: Page.builder(input.pagination)
+        });
 
     }
 
@@ -96,193 +108,153 @@ class TeamWork {
      */
     async getActiveProjects() {
 
-        const page = Page.builder().status('ACTIVE').all();
-        return await this.request({ name: 'project.list', page });
+        return await this.request({
+            name: 'project.list',
+            page: Page.builder().status('ACTIVE').all()
+        });
 
     }
 
     /**
      * Retrieve pending tasks assigned to ONE or MANY user(s).
      */
-    async getProjectTasks({ projectId, userIds = [], pagination }) {
+    async getProjectTasks(input = { projectId: '0' }) {
 
-        const args = [projectId];
-        const page = Page.builder(pagination).fromUser(userIds);
-        return await this.request({ name: 'project.tasks', args, page });
+        return await this.request({
+            name: 'project.tasks',
+            args: [input.projectId],
+            page: Page.builder(input.pagination)
+        });
 
     }
 
     /**
      * Add time entry to a specific user inside a specific task.
      */
-    async addTaskTimeEntry({
-        taskId,
-        userId,
-        hours,
-        minutes,
-        description,
-        date = Helper.date(),
-        time = Helper.time(),
-        isbillable = '1',
-        tags = ''
-    }) {
+    async addTaskTimeEntry(input = { taskId: '0' }) {
 
-        const args = [taskId];
-        const params = {
-            'time-entry': {
-                'hours': hours,
-                'minutes': minutes,
-                'isbillable': isbillable,
-                'tags': tags,
-                'time': time,
-                'date': date,
-                'description': description,
-                'person-id': userId
+        return await this.request({
+            name: 'task.time.add',
+            args: [input.taskId],
+            params: {
+                'time-entry': input['time-entry']
             }
-        };
-
-        return await this.request({ name: 'task.time.add', args, params });
+        });
 
     }
 
     /**
      * Add time entry to a specific user inside a specific project.
      */
-    async addProjectTimeEntry({
-        projectId,
-        userId,
-        hours,
-        minutes,
-        description,
-        date = Helper.date(),
-        time = Helper.time(),
-        isbillable = '1',
-        tags = ''
-    }) {
+    async addProjectTimeEntry(input = { projectId: '0' }) {
 
-        const args = [projectId];
-        const params = {
-            'time-entry': {
-                'hours': hours,
-                'minutes': minutes,
-                'isbillable': isbillable,
-                'tags': tags,
-                'time': time,
-                'date': date,
-                'description': description,
-                'person-id': userId
+        return await this.request({
+            name: 'project.time.add',
+            args: [input.projectId],
+            params: {
+                'time-entry': input['time-entry']
             }
-        };
-
-        return await this.request({ name: 'project.time.add', args, params });
+        });
 
     }
 
     /**
      * Add ONE or MANY user(s) to the project.
      */
-    async addProjectUser({ projectId, userIds }) {
+    async addProjectUser(input = { projectId: '0', userIds: [] }) {
 
-        const args = [projectId];
-        const params = { add: { userIdList: this.formatList(userIds) } };
-        return await this.request({ name: 'project.people.add', args, params });
+        return await this.request({
+            name: 'project.people.add',
+            args: [input.projectId],
+            params: {
+                add: {
+                    userIdList: this.formatList(input.userIds)
+                }
+            }
+        });
 
     }
 
     /**
      * Add ONE or MANY user(s) to the project.
      */
-    async removeTimeEntry({ timeId }) {
+    async removeTimeEntry(input = { timeId: '0' }) {
 
-        const args = [timeId];
-        return await this.request({ name: 'time.remove', args });
+        return await this.request({
+            name: 'time.remove',
+            args: [input.timeId]
+        });
 
     }
 
     /**
      * Remove ONE or MANY user(s) from the project.
      */
-    async removeProjectUser({ projectId, userIds }) {
+    async removeProjectUser(input = { projectId: '0', userIds: [] }) {
 
-        const args = [projectId];
-        const params = { remove: { userIdList: this.formatList(userIds) } };
-        return await this.request({ name: 'project.people.remove', args, params });
+        return await this.request({
+            name: 'project.people.remove',
+            args: [input.projectId],
+            params: {
+                remove: {
+                    userIdList: this.formatList(input.userIds)
+                }
+            }
+        });
 
     }
 
     /**
      * Mark ONE task as completed.
      */
-    async completeTask({ taskId }) {
+    async completeTask(input = { taskId: '0' }) {
 
-        const args = [taskId];
-        return await this.request({ name: 'task.done', args });
+        return await this.request({
+            name: 'task.done',
+            args: [input.taskId]
+        });
 
     }
 
     /**
      * Mark ONE task as uncompleted and reopen it.
      */
-    async reopenTask({ taskId }) {
+    async reopenTask(input = { taskId: '0' }) {
 
-        const args = [taskId];
-        return await this.request({ name: 'task.undone', args });
+        return await this.request({
+            name: 'task.undone',
+            args: [input.taskId]
+        });
 
     }
 
     /**
      * Create a task inside of a specific tasklist.
      */
-    async addTask({
-        parentTaskId = '0',
-        tasklistId,
-        content,
-        progress = '0',
-        startDate = '',
-        endDate = ''
-    }) {
+    async addTask(input = { tasklistId: '0' }) {
 
-        const args = [tasklistId];
-        const params = {
-            'todo-item': {
-                'content': content,
-                'progress': progress,
-                'parentTaskId': parentTaskId,
-                'start-date': startDate,
-                'end-date': endDate
+        return await this.request({
+            name: 'task.add',
+            args: [input.tasklistId],
+            params: {
+                'todo-item': input['todo-item']
             }
-        };
-
-        return await this.request({ name: 'task.add', args, params });
+        });
 
     }
 
     /**
      * Create a tasklist inside of a specific project.
      */
-    async addTasklist({
-        projectId,
-        name,
-        description,
-        hidden = false,
-        pinned = false,
-        milestoneId = '',
-        todoListTemplateId = ''
-    }) {
+    async addTasklist(input = { projectId: '0' }) {
 
-        const args = [projectId];
-        const params = {
-            'todo-list': {
-                'name': name,
-                'pinned': pinned,
-                'description': description,
-                'todo-list-template-id': todoListTemplateId,
-                'milestone-id': milestoneId,
-                'private': hidden
+        return await this.request({
+            name: 'tasklist.add',
+            args: [input.projectId],
+            params: {
+                'todo-item': input['todo-item']
             }
-        };
-
-        return await this.request({ name: 'tasklist.add', args, params });
+        });
 
     }
 

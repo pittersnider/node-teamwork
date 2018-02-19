@@ -11,29 +11,35 @@ class Page {
         };
     }
 
-    index(number) {
+    /**
+     * The page number, used with 'max' items per time.
+     * @see #max
+     */
+    page(number) {
 
         this.queries.page = [number];
         return this;
 
     }
 
-    max(number) {
+    /**
+     * @see #size
+     */
+    limit(number) {
         return this.size(number);
     }
 
-    size(number) {
-
-        this.queries.pageSize = [number];
-        return this;
-
-    }
-
+    /**
+     * Filter by statuses.
+     */
     status() {
         return this.defineTerm('status', Object.values(arguments));
     }
 
-    defineTerm(name, values) {
+    /**
+     * Internal API to set query values [not compiled].
+     */
+    set(name, values) {
 
         if (!Array.isArray(values)) {
             values = [values.toString()];
@@ -51,17 +57,13 @@ class Page {
 
     }
 
+    /**
+     * Retrieve all rows or, by default, requests the default estimated
+     *   value from TeamWork.
+     */
     all() {
         delete this.queries.pageSize;
         return this;
-    }
-
-    fromUser() {
-        return this.defineTerm('responsible-party-ids', Object.values(arguments));
-    }
-
-    includePeople() {
-        return this.defineTerm('includePeople', Object.values(arguments));
     }
 
     /**

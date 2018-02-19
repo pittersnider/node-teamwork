@@ -1,6 +1,6 @@
 {
   "name": "node-teamwork",
-  "version": "1.1.1",
+  "version": "1.2.0",
   "description": "A collection of useful and developer-friendly JavaScript APIs to access and manipulate TeamWork Projects (the Restful APIs).",
   "main": "src/index.js",
   "scripts": {
@@ -25,9 +25,11 @@
   "dependencies": {
     "axios": "^0.17.1",
     "babel-eslint": "^8.2.1",
+    "chai": "^4.1.2",
     "eslint": "^4.17.0",
     "joi": "^13.1.2",
     "lodash": "^4.17.5",
+    "mocha": "^5.0.1",
     "moment": "^2.20.1"
   }
 }

@@ -30,12 +30,12 @@ class Helper {
      * FIXME: Separar em duas funções.
      * 
      */
-    static convertsTimestring({ string, from = moment() }) {
+    static convertsTimestring(options = { string: '', from: moment() }) {
 
         const time = { hour: 0, minutes: 0 };
         let pattern = regex.convertsTimestring();
 
-        if ((pattern = pattern.exec(string))) {
+        if ((pattern = pattern.exec(options.string))) {
 
             let timeInMinutes = Number.parseFloat(pattern[1]) * 60;
             time.minutes = timeInMinutes % 60;
@@ -43,7 +43,7 @@ class Helper {
 
         }
 
-        return from.subtract(time.hour, 'h').subtract(time.minutes, 'm').format('HH:mm');
+        return options.from.subtract(time.hour, 'h').subtract(time.minutes, 'm').format('HH:mm');
 
     }
 

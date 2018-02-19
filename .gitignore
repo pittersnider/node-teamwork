@@ -57,6 +57,5 @@ typings/
 # dotenv environment variables file
 .env
 
-# My development files/notes
-src/test.js
-old.txt
+# internal tests
+test/_index.js

@@ -32,8 +32,7 @@ const initRouter = function(url, headers) {
             }
         },
         user: {
-            list: format(url, 'GET', 'people.json'),
-            tasks: format(url, 'GET', 'tasks.json')
+            list: format(url, 'GET', 'people.json')
         },
         task: {
             done: format(url, 'PUT', 'tasks/%s/complete.json'),
@@ -52,13 +51,17 @@ const initRouter = function(url, headers) {
 
     };
 
-    routes.get = function({ name, args = [], params = {}, page = Page.builder() }) {
+    routes.get = function(options = { name: '', args: [], params: {}, page: Page.builder() }) {
 
-        const route = _.get(routes, name);
-        const cloneArgs = _.clone(args);
+        if (!options.page || !(options.page instanceof Page)) {
+            options.page = Page.builder();
+        }
 
-        route.url = route.url.replace('%s', () => cloneArgs.shift()) + page.querystring();
-        route.data = params;
+        const route = _.get(routes, options.name);
+        const cloneArgs = _.clone(options.args);
+
+        route.url = route.url.replace('%s', () => cloneArgs.shift()) + options.page.querystring();
+        route.data = options.params;
         route.headers = headers;
 
         return route;

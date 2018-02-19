@@ -79,6 +79,33 @@ class TeamWork {
     }
 
     /**
+     * Get details about a specific task.
+     */
+    async getTask(input = { taskId: '0' }) {
+
+        return await this.request({
+            name: 'task.get',
+            args: [input.taskId],
+            page: Page.builder(input.pagination)
+        });
+
+    }
+
+
+    /**
+     * Get details about a specific tasklist.
+     */
+    async getTasklist(input = { tasklistId: '0' }) {
+
+        return await this.request({
+            name: 'tasklist.get',
+            args: [input.tasklistId],
+            page: Page.builder(input.pagination)
+        });
+
+    }
+
+    /**
      * Get complete and detailed people list from a specific project.
      */
     async getProjectPeople(input = { projectId: '0' }) {

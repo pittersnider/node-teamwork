@@ -59,7 +59,7 @@ const initRouter = function(url, headers) {
             options.page = Page.builder();
         }
 
-        const route = _.get(routes, options.name);
+        const route = _.cloneDeep(_.get(routes, options.name));
         const cloneArgs = _.clone(options.args);
 
         route.url = route.url.replace('%s', () => cloneArgs.shift()) + options.page.querystring();

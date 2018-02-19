@@ -260,4 +260,8 @@ class TeamWork {
 
 }
 
+TeamWork.page = require('./page');
+TeamWork.helper = require('./helper');
+TeamWork.router = require('./router');
+
 module.exports = TeamWork;

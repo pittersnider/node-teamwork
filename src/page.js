@@ -23,10 +23,13 @@ class Page {
     }
 
     /**
-     * @see #size
+     * Item limit per page.
      */
     limit(number) {
-        return this.size(number);
+
+        this.queries.pageSize = [number];
+        return this;
+
     }
 
     /**

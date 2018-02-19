@@ -97,7 +97,7 @@ class TeamWork {
     async getUsers(input = {}) {
 
         return await this.request({
-            name: 'user.tasks',
+            name: 'user.list',
             page: Page.builder(input.pagination)
         });
 

@@ -66,6 +66,22 @@ class TeamWork {
     }
 
     /**
+     * Add project
+     */
+    async addProject(input) {
+
+        return await this.request({
+            name: 'project.add',
+            args: [],
+            page: Page.builder(),
+            params: {
+                project: input
+            }
+        });
+
+    }
+
+    /**
      * Get details about a specific project.
      */
     async getProject(input = { projectId: '0' }) {
@@ -285,6 +301,60 @@ class TeamWork {
 
     }
 
+    /**
+     * Add company
+     */
+    async addCompany(input) {
+
+        return await this.request({
+            name: 'company.add',
+            args: [],
+            page: Page.builder(),
+            params: {
+                company: input
+            }
+        });
+
+    }
+
+    /**
+     * List all companies
+     */
+    async getCompanies() {
+
+        return await this.request({
+            name: 'company.list',
+            args: [],
+            page: Page.builder(),
+        });
+
+    }
+
+    /**
+     * Get specific company
+     */
+    async getCompany(companyId) {
+
+        return await this.request({
+            name: 'company.get',
+            args: [companyId],
+            page: Page.builder(),
+        });
+
+    }
+
+    /**
+     * Remove specific company
+     */
+    async removeCompany(companyId) {
+
+        return await this.request({
+            name: 'company.delete',
+            args: [companyId],
+            page: Page.builder(),
+        });
+
+    }
 }
 
 TeamWork.page = require('./page');

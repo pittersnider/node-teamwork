@@ -22,6 +22,7 @@ const initRouter = function(url, headers) {
             list: format(url, 'GET', 'projects.json'),
             get: format(url, 'GET', 'projects/%s.json'),
             tasks: format(url, 'GET', 'projects/%s/tasks.json'),
+            add: format(url, 'POST', 'projects.json'),
             people: {
                 list: format(url, 'GET', 'projects/%s/people.json'),
                 add: format(url, 'PUT', 'projects/%s/people.json'),
@@ -49,6 +50,12 @@ const initRouter = function(url, headers) {
         },
         time: {
             remove: format(url, 'DELETE', 'time_entries/%s.json')
+        },
+        company: {
+            add: format(url, 'POST', 'companies.json'),
+            list: format(url, 'GET', 'companies.json'),
+            get: format(url, 'GET', 'companies/%s.json'),
+            remove: format(url, 'DELETE', 'companies/%s.json')
         }
 
     };

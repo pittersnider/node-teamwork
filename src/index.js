@@ -82,6 +82,19 @@ class TeamWork {
     }
 
     /**
+     * List all project.
+     */
+    async listProjects(input) {
+
+        return await this.request({
+            name: 'project.list',
+            args: [],
+            page: Page.builder(input.pagination)
+        });
+
+    }
+
+    /**
      * Get details about a specific project.
      */
     async getProject(input = { projectId: '0' }) {

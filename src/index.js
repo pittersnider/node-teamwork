@@ -108,6 +108,23 @@ class TeamWork {
     }
 
     /**
+     * Edit status
+     */
+
+     async editProject(input) {
+
+        return await this.request({
+            name: 'project.edit',
+            args: [input.id],
+            params: {
+                project: {
+                    status: input.status
+                }
+            }
+        });
+     }
+
+    /**
      * Get details about a specific task.
      */
     async getTask(input = { taskId: '0' }) {

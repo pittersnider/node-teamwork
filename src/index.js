@@ -88,8 +88,8 @@ class TeamWork {
 
         return await this.request({
             name: 'project.list',
-            args: [input.includePeople],
-            page: Page.builder(input.pagination)
+            args: [],
+            page: Page.builder(input.pagination).set('includePeople', input.includePeople)
         });
 
     }

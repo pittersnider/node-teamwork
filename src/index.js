@@ -84,12 +84,13 @@ class TeamWork {
     /**
      * List all project.
      */
-    async listProjects(input = {includePeople: false}) {
+    async listProjects(input = { includePeople: false, status: 'active' }) {
 
         return await this.request({
             name: 'project.list',
             args: [],
             page: Page.builder(input.pagination).set('includePeople', input.includePeople)
+            .set('status', input.status)
         });
 
     }

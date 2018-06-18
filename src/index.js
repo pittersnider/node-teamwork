@@ -124,6 +124,18 @@ class TeamWork {
         });
      }
 
+     /**
+     * Delete status
+     */
+
+    async deleteProject(input) {
+
+        return await this.request({
+            name: 'project.delete',
+            args: [input.id]
+        });
+     }
+
     /**
      * Get details about a specific task.
      */

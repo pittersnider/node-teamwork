@@ -24,6 +24,7 @@ const initRouter = function(url, headers) {
             tasks: format(url, 'GET', 'projects/%s/tasks.json'),
             add: format(url, 'POST', 'projects.json'),
             edit: format(url, 'PUT', 'projects/%s.json'),
+            delete: format(url, 'DELETE', 'projects/%s.json'),
             people: {
                 list: format(url, 'GET', 'projects/%s/people.json'),
                 add: format(url, 'PUT', 'projects/%s/people.json'),

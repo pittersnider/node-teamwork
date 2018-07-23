@@ -51,7 +51,8 @@ const initRouter = function(url, headers) {
             get: format(url, 'GET', 'tasklists/%s.json')
         },
         time: {
-            remove: format(url, 'DELETE', 'time_entries/%s.json')
+            remove: format(url, 'DELETE', 'time_entries/%s.json'),
+            list: format(url, 'GET', 'time_entries.json')
         },
         company: {
             add: format(url, 'POST', 'companies.json'),

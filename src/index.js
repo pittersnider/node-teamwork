@@ -261,6 +261,25 @@ class TeamWork {
 
     }
 
+
+    /**
+     * List time by user
+     */
+    async listTime(input = { userId: '0', fromDate: '20180101' }) {
+
+        return await this.request({
+            name: 'time.list',
+            args: [],
+            params: {
+                list: {
+                    userId: input.userId,
+                    fromdate: input.fromDate,
+                    todate: input.toDate
+                }
+            }
+        });
+
+    }
     /**
      * Add ONE or MANY user(s) to the project.
      */

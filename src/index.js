@@ -90,7 +90,7 @@ class TeamWork {
             name: 'project.list',
             args: [],
             page: Page.builder(input.pagination).set('includePeople', input.includePeople)
-            .set('status', input.status)
+                .set('status', input.status)
         });
 
     }
@@ -112,7 +112,7 @@ class TeamWork {
      * Edit status
      */
 
-     async editProject(input) {
+    async editProject(input) {
 
         return await this.request({
             name: 'project.edit',
@@ -123,11 +123,11 @@ class TeamWork {
                 }
             }
         });
-     }
+    }
 
-     /**
-     * Delete status
-     */
+    /**
+    * Delete status
+    */
 
     async deleteProject(input) {
 
@@ -135,7 +135,7 @@ class TeamWork {
             name: 'project.delete',
             args: [input.id]
         });
-     }
+    }
 
     /**
      * Get details about a specific task.
@@ -271,11 +271,9 @@ class TeamWork {
             name: 'time.list',
             args: [],
             params: {
-                list: {
-                    userId: input.userId,
-                    fromdate: input.fromDate,
-                    todate: input.toDate
-                }
+                userId: input.userId,
+                fromdate: input.fromDate,
+                todate: input.toDate
             }
         });
 

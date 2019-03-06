@@ -36,7 +36,7 @@ class Page {
      * Filter by statuses.
      */
     status() {
-        return this.defineTerm('status', Object.values(arguments));
+        return this.set('status', Object.values(arguments));
     }
 
     /**

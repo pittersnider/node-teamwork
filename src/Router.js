@@ -61,8 +61,24 @@ class Router {
         };
     }
 
+    parseParams(params) {
+        const obj = {};
+
+        for (let [key, value] of _.toPairs(params)) {
+            if (_.isArray(value)) {
+                value = value.join(',');
+            } else if (_.isPlainObject(value)) {
+                value = this.parseParams(value);
+            }
+
+            obj[key] = value;
+        }
+
+        return obj;
+    }
+
     get(options = { name: '', args: [], params: {}, page: Page.builder() }) {
-        if (!options.page || !(options.page instanceof Page)) {
+        if (!(options.page instanceof Page)) {
             options.page = Page.builder();
         }
 
@@ -70,7 +86,7 @@ class Router {
         const cloneArgs = _.clone(options.args);
 
         route.url = route.url.replace('%s', () => cloneArgs.shift()) + options.page.querystring();
-        route.data = options.params;
+        route.data = this.parseParams(options.params);
         route.headers = this.headers;
 
         return route;

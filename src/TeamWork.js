@@ -16,25 +16,37 @@ class TeamWork {
         this.router = new Router(options.url, this.headers);
     }
 
-    formatList(list) {
-        if (_.isArray(list)) {
-            return list.join(',');
-        }
-
-        return list.toString().trim();
-    }
-
     /**
      * Retrieves the route and performs the request
      *  using the Authentication and Content-Type headers.
+     * 
+     * @return {Promise<{ next: () => void }>}
      */
-    async request(options = { name: null, args: [], params: {}, page: null }) {
-        return (await axios(this.router.get({
-            name: options.name,
-            args: options.args,
-            params: options.params,
-            page: options.page
-        }))).data;
+    async request(options) {
+        options = _.assign({
+            name: null,
+            args: [],
+            params: {},
+            page: null
+        }, options);
+
+        if (!(options.page instanceof Page)) {
+            options.page = Page.builder();
+        }
+
+        try {
+            const result = await axios(this.router.get(options));
+            return {
+                ...result.data,
+                next: () => {
+                    if (options.page.next(result)) {
+                        return this.request(options);
+                    }
+                }
+            };
+        } catch (e) {
+            throw e;
+        }
 
         // try {
         // } catch (e) {
@@ -158,7 +170,7 @@ class TeamWork {
     getActiveProjects() {
         return this.request({
             name: 'project.list',
-            page: Page.builder().status('ACTIVE').all()
+            page: Page.builder().status('ACTIVE')
         });
     }
 
@@ -208,7 +220,7 @@ class TeamWork {
             args: [input.projectId],
             params: {
                 add: {
-                    userIdList: this.formatList(input.userIds)
+                    userIdList: input.userIds
                 }
             }
         });
@@ -248,7 +260,7 @@ class TeamWork {
             args: [input.projectId],
             params: {
                 remove: {
-                    userIdList: this.formatList(input.userIds)
+                    userIdList: input.userIds
                 }
             }
         });

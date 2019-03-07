@@ -3,10 +3,15 @@
 const _ = require('lodash');
 
 class Page {
-    constructor(basics = { limit: 500, offset: 0 }) {
+    constructor(options) {
+        options = _.assign({
+            page: 1,
+            pageSize: 500
+        }, options);
+
         this.queries = {
-            pageSize: [basics.limit],
-            page: [Math.round(basics.offset / basics.limit) + 1]
+            page: options.page,
+            pageSize: options.pageSize
         };
     }
 
@@ -15,7 +20,7 @@ class Page {
      * @see #max
      */
     page(number) {
-        this.queries.page = [number];
+        this.queries.page = number;
         return this;
     }
 
@@ -23,15 +28,30 @@ class Page {
      * Item limit per page.
      */
     limit(number) {
-        this.queries.pageSize = [number];
+        this.queries.pageSize = number;
         return this;
+    }
+
+    /**
+     * 
+     * @param {*} result 
+     * @return {boolean}
+     */
+    next(result) {
+        const totalPages = +result.headers['x-pages'];
+        if((_.isFinite(totalPages) && this.queries.page + 1 <= totalPages)) {
+            ++this.queries.page;
+            return true;
+        }
+
+        return false;
     }
 
     /**
      * Filter by statuses.
      */
-    status() {
-        return this.set('status', Object.values(arguments));
+    status(...args) {
+        return this.set('status', Object.values(args));
     }
 
     /**
@@ -41,7 +61,7 @@ class Page {
         if (!Array.isArray(values)) {
             values = [values.toString()];
         } else {
-            values = values.map((value) => String(value));
+            values = values.map(value => String(value));
         }
 
         if (this.queries[name]) {
@@ -54,19 +74,18 @@ class Page {
     }
 
     /**
-     * Retrieve all rows or, by default, requests the default estimated
-     *   value from TeamWork.
-     */
-    all() {
-        delete this.queries.pageSize;
-        return this;
-    }
-
-    /**
      * Compile queries and turns into a url querystring.
      */
     querystring() {
-        return '?' + Object.keys(this.queries).map((key) => key + '=' + this.queries[key].join(',')).join('&');
+        const queryParams = _.toPairs(this.queries).map(([key, value]) => {
+            if (_.isArray(value)) {
+                value = value.join(',');
+            }
+
+            return `${key}=${value}`;
+        });
+
+        return `?${queryParams.join('&')}`;
     }
 
     static builder(defaultPage) {

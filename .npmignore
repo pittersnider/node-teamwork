@@ -1,0 +1,11 @@
+.DS_Store
+.idea/
+test/
+.editorconfig
+.eslintrc.json
+.gitignore
+.jsbeautifyrc
+.travis.yml
+gulpfile.js
+npm-debug.log
+yarn.lock

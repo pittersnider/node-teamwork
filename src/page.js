@@ -3,7 +3,6 @@
 const _ = require('lodash');
 
 class Page {
-
     constructor(basics = { limit: 250, offset: 0 }) {
         this.queries = {
             pageSize: [basics.limit],
@@ -16,20 +15,16 @@ class Page {
      * @see #max
      */
     page(number) {
-
         this.queries.page = [number];
         return this;
-
     }
 
     /**
      * Item limit per page.
      */
     limit(number) {
-
         this.queries.pageSize = [number];
         return this;
-
     }
 
     /**
@@ -43,7 +38,6 @@ class Page {
      * Internal API to set query values [not compiled].
      */
     set(name, values) {
-
         if (!Array.isArray(values)) {
             values = [values.toString()];
         } else {
@@ -57,7 +51,6 @@ class Page {
         }
 
         return this;
-
     }
 
     /**
@@ -77,15 +70,12 @@ class Page {
     }
 
     static builder(defaultPage) {
-
         if (defaultPage && (defaultPage instanceof Page)) {
             return _.cloneDeep(defaultPage);
         }
 
         return new Page();
-
     }
-
 }
 
 module.exports = Page;

@@ -9,7 +9,7 @@ describe('TeamWork', function() {
     });
 
     it('should work', async function() {
-        const projects = (await tw.getActiveProjects()).payload.projects;
-        console.log(projects.length);
+        const projects = (await tw.getActiveProjects()).projects;
+        // console.log(projects.length);
     });
 });

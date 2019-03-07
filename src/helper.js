@@ -7,7 +7,6 @@ const regex = {
 };
 
 class Helper {
-
     /**
      * Returns the current date in TeamWork format.
      */
@@ -31,7 +30,6 @@ class Helper {
      * 
      */
     static convertsTimestring(options = { string: '', from: moment() }) {
-
         const time = { hour: 0, minutes: 0 };
         let pattern = regex.convertsTimestring();
 
@@ -44,9 +42,7 @@ class Helper {
         }
 
         return options.from.subtract(time.hour, 'h').subtract(time.minutes, 'm').format('HH:mm');
-
     }
-
 }
 
 module.exports = Helper;

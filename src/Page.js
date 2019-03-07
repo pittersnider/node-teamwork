@@ -3,7 +3,7 @@
 const _ = require('lodash');
 
 class Page {
-    constructor(basics = { limit: 250, offset: 0 }) {
+    constructor(basics = { limit: 500, offset: 0 }) {
         this.queries = {
             pageSize: [basics.limit],
             page: [Math.round(basics.offset / basics.limit) + 1]

@@ -34,9 +34,11 @@ class TeamWork {
             options.page = Page.builder();
         }
 
+        const route = this.router.get(options);
         try {
-            const result = await axios(this.router.get(options));
+            const result = await axios(route);
             return {
+                url: route.url,
                 ...result.data,
                 next: () => {
                     if (options.page.next(result)) {
@@ -45,16 +47,24 @@ class TeamWork {
                 }
             };
         } catch (e) {
-            throw e;
-        }
+            let message = e.response.data;
+            if(message.CONTENT) {
+                message = message.CONTENT;
+            }
 
-        // try {
-        // } catch (e) {
-        //     const error = new Error('An error has occured');
-        //     error.data = e.response.data;
-        //     error.url = route.url;
-        //     throw error;
-        // }
+            if(message.MESSAGE) {
+                message = message.MESSAGE;
+            } else if(e.code === 404) {
+                message = 'content not found';
+            } else {
+                message = 'an error has occurred';
+            }
+
+            const error = new Error(message);
+            error.url = route.url;
+            error.source = e;
+            throw error;
+        }
     }
 
     /**

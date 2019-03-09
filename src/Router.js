@@ -85,6 +85,7 @@ class Router {
         const route = _.cloneDeep(_.get(this.routes, options.name));
         const cloneArgs = _.clone(options.args);
 
+        route.options = options;
         route.url = route.url.replace('%s', () => cloneArgs.shift()) + options.page.querystring();
         route.data = this.parseParams(options.params);
         route.headers = this.headers;

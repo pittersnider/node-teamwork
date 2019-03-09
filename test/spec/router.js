@@ -4,7 +4,7 @@ const _ = require('lodash');
 const {
     assert
 } = require('chai');
-const TeamWork = require('../src');
+const TeamWork = require('../../src');
 
 describe('Router', function() {
     it('should parse params correctly', async function() {
@@ -20,9 +20,7 @@ describe('Router', function() {
         const router = new TeamWork.Router('url', {});
         const parsedParams = router.parseParams(params);
 
-        const foundString = parsedParams.add.projects.ids;
-        const expectedString = params.add.projects.ids.join(',');
-
-        assert.strictEqual(foundString, expectedString);
+        assert.strictEqual(parsedParams.add.userIdList, params.add.userIdList.join(','));
+        assert.strictEqual(parsedParams.add.projects.ids, params.add.projects.ids.join(','));
     });
 });

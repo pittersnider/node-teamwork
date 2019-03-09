@@ -39,7 +39,7 @@ class Page {
      */
     next(result) {
         const totalPages = +result.headers['x-pages'];
-        if((_.isFinite(totalPages) && this.queries.page + 1 <= totalPages)) {
+        if (_.isFinite(totalPages) && this.queries.page + 1 <= totalPages) {
             ++this.queries.page;
             return true;
         }
@@ -82,10 +82,13 @@ class Page {
                 value = value.join(',');
             }
 
-            return `${key}=${value}`;
+            return `${encodeURIComponent(key)}=${encodeURIComponent(value)}`;
         });
 
-        return `?${queryParams.join('&')}`;
+        if (queryParams.length > 0) {
+            return `?${queryParams.join('&')}`;
+        }
+        return '';
     }
 
     static builder(defaultPage) {

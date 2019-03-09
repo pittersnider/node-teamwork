@@ -1,13 +1,19 @@
 'use strict';
 
-const TeamWork = require('./TeamWork');
-TeamWork.Page = require('./Page');
-TeamWork.Router = require('./Router');
-TeamWork.Helper = require('./Helper');
+const _TeamWork = require('./TeamWork');
+const Page = require('./Page');
+const Router = require('./Router');
+const Helper = require('./Helper');
 
-// backwards compatibility
-TeamWork.page = TeamWork.Page;
-TeamWork.router = TeamWork.Router;
-TeamWork.helper = TeamWork.Helper;
+class TeamWork extends _TeamWork {
+    static get Page() { return Page; }
+    static get Router() { return Router; }
+    static get Helper() { return Helper; }
+
+    // backwards compatibility
+    static get page() { return Page; }
+    static get router() { return Router; }
+    static get helper() { return Helper; }
+}
 
 module.exports = TeamWork;

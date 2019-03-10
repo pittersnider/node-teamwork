@@ -34,11 +34,11 @@ class Page {
 
     /**
      * 
-     * @param {*} result 
+     * @param {{headers: []}} response 
      * @return {boolean}
      */
-    next(result) {
-        const totalPages = +result.headers['x-pages'];
+    next(response) {
+        const totalPages = +response.headers['x-pages'];
         if (_.isFinite(totalPages) && this.queries.page + 1 <= totalPages) {
             ++this.queries.page;
             return true;

@@ -36,25 +36,44 @@ class TeamWork {
 
         const route = this.router.get(options);
         try {
-            const result = await axios(route);
-            return {
+            const response = await axios(route);
+            const data = {
+                ...response.data,
+            };
+
+            const ret = {
                 url: route.url,
-                ...result.data,
+                ...data,
+                payload: data, // backwards compatibility
+                all: async function*() {
+                    let result = ret;
+                    do {
+                        yield result;
+                    } while (result = await result.next());
+                },
                 next: () => {
-                    if (options.page.next(result)) {
-                        return this.request(options);
-                    }
+                    return new Promise(resolve => {
+                        if (options.page.next(response)) {
+                            setImmediate(() => {
+                                resolve(this.request(options));
+                            });
+                        } else {
+                            resolve();
+                        }
+                    });
                 }
             };
+
+            return ret;
         } catch (e) {
             let message = e.response.data;
-            if(message.CONTENT) {
+            if (message.CONTENT) {
                 message = message.CONTENT;
             }
 
-            if(message.MESSAGE) {
+            if (message.MESSAGE) {
                 message = message.MESSAGE;
-            } else if(e.code === 404) {
+            } else if (e.code === 404) {
                 message = 'content not found';
             } else {
                 message = 'an error has occurred';

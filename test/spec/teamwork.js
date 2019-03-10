@@ -27,6 +27,14 @@ describe('TeamWork', function() {
         // only loop 2 pages
     });
 
+    it('should paginate correctly on .all()', async function() {
+        let count = 0;
+        for await (const { projects } of (await tw.getActiveProjects()).all()) {
+            count += projects.length;
+        }
+        assert.notEqual(count, 0);
+    });
+
     it('should get a project and not paginate', async function() {
         if (projects.length === 0) {
             throw new Error('need more projects');

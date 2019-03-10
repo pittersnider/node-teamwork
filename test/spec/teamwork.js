@@ -15,7 +15,7 @@ describe('TeamWork', function() {
     const projects = [];
 
     it('should paginate', async function() {
-        this.timeout(10 * 1000);
+        this.timeout(15 * 1000);
 
         let i = 0;
         let result = await tw.getActiveProjects();
@@ -23,13 +23,25 @@ describe('TeamWork', function() {
             for (const project of result.projects) {
                 projects.push(project.id);
             }
-        } while (++i < 2 && (result = await result.next()));
+        } while (++i < 2 && (result = await result.next));
         // only loop 2 pages
     });
 
-    it('should paginate correctly on .all()', async function() {
+    it('should paginate correctly on .until({ page: number })', async function() {
+        this.timeout(10 * 1000);
+
         let count = 0;
-        for await (const { projects } of (await tw.getActiveProjects()).all()) {
+        for await (const { projects } of (await tw.getActiveProjects()).until({ page: 2 })) {
+            count += projects.length;
+        }
+        assert.equal(count, projects.length);
+    });
+
+    it('should paginate correctly on .all', async function() {
+        this.timeout(10 * 1000);
+
+        let count = 0;
+        for await (const { projects } of (await tw.getActiveProjects()).all) {
             count += projects.length;
         }
         assert.notEqual(count, 0);
@@ -43,7 +55,7 @@ describe('TeamWork', function() {
         const result = await tw.getProject({
             projectId: projects.pop()
         });
-        assert.isUndefined(await result.next());
+        assert.isUndefined(await result.next);
     });
 
     it('should throw bad request', async function() {

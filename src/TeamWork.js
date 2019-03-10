@@ -3,6 +3,7 @@
 const _ = require('lodash');
 const axios = require('axios');
 
+const TeamWorkResponse = require('./TeamWorkResponse');
 const Router = require('./Router');
 const Page = require('./Page');
 
@@ -20,7 +21,7 @@ class TeamWork {
      * Retrieves the route and performs the request
      *  using the Authentication and Content-Type headers.
      * 
-     * @return {Promise<{ next: () => void }>}
+     * @return {TeamWorkResponse}
      */
     async request(options) {
         options = _.assign({
@@ -37,34 +38,11 @@ class TeamWork {
         const route = this.router.get(options);
         try {
             const response = await axios(route);
-            const data = {
-                ...response.data,
-            };
-
-            const ret = {
-                url: route.url,
-                ...data,
-                payload: data, // backwards compatibility
-                all: async function*() {
-                    let result = ret;
-                    do {
-                        yield result;
-                    } while (result = await result.next());
-                },
-                next: () => {
-                    return new Promise(resolve => {
-                        if (options.page.next(response)) {
-                            setImmediate(() => {
-                                resolve(this.request(options));
-                            });
-                        } else {
-                            resolve();
-                        }
-                    });
-                }
-            };
-
-            return ret;
+            return new TeamWorkResponse({
+                tw: this,
+                response,
+                options
+            });
         } catch (e) {
             let message = e.response.data;
             if (message.CONTENT) {
